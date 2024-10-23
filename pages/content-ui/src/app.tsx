@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-
 interface TitleEvalResultProps {
   result: {
     evaluation_rating: string;
     evaluation_context: string;
   };
+  summary:string
 }
 
 const ratingToClassName = (rating: string): string => {
@@ -22,14 +22,21 @@ const ratingToClassName = (rating: string): string => {
   }
 };
 
-export const TitleEvalResult: React.FC<TitleEvalResultProps & { onUnblock?: () => void }> = ({ result, onUnblock }) => {
+export const TitleEvalResult: React.FC<TitleEvalResultProps & { onUnblock?: () => void }> = ({ result, summary,onUnblock }) => {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [finalOutput, setFinalOutput] = useState<string | null>(null); // State to hold the final output
+
   const ratingColor = ratingToClassName(result.evaluation_rating);
 
   const handleButtonClick = () => {
     setShowInput(true);
   };
+
+  
+
+  // Fetch transcript and process it
+  
 
   useEffect(() => {
     if (inputValue === 'this video is not a distraction' && onUnblock) {
@@ -39,17 +46,27 @@ export const TitleEvalResult: React.FC<TitleEvalResultProps & { onUnblock?: () =
 
   return (
     <div className={`w-2/3 my-8 text-black rounded-xl p-4 text-xl ${ratingColor}`}>
-      <p>{result.evaluation_context}</p>
+      <p>{result.evaluation_context}
+
+      {/* Display final output */}
+      <p>Summary:</p>
+      
+      <div dangerouslySetInnerHTML={{ __html: summary }} />
+    
+      </p>
+      {/* Show "Unblock" button */}
       {(result.evaluation_rating === 'not_sure' || result.evaluation_rating === 'irrelevant') && onUnblock && (
         <div className="flex justify-end items-end">
           {!showInput && (
             <button onClick={handleButtonClick} className="mt-2 p-2 bg-gray-200 text-gray-500 rounded-xl">
               Unblock
-            </button>)
-          }
+            </button>
+          )}
           {showInput && (
             <div className="mt-4 w-full">
-              <div className="text-gray-500 mb-2">Type <strong>"this video is not a distraction"</strong> to unblock</div>
+              <div className="text-gray-500 mb-2">
+                Type <strong>"this video is not a distraction"</strong> to unblock
+              </div>
               <input
                 type="text"
                 value={inputValue}
@@ -61,12 +78,10 @@ export const TitleEvalResult: React.FC<TitleEvalResultProps & { onUnblock?: () =
             </div>
           )}
         </div>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
-
 export const Analyzing: React.FC = () => {
   return (
     <div className="w-300 h-100 flex justify-center items-center">

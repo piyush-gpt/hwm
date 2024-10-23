@@ -1,6 +1,6 @@
 <div align="center">
 <img src="chrome-extension/public/logo.png" alt="logo" width="128" height="128"/>
-<h1> Youtube Addiction Rehab
+<h1> Youtube Distraction Helper
 
 ![](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
 ![](https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=typescript&logoColor=white)
@@ -24,7 +24,7 @@
 - [Reference](#reference)
 
 ## Intro <a name="intro"></a>
-YouTube Addiction Rehab is your digital ally against compulsive video watching on YouTube. Utilizing LLM AI technology, this extension curates your viewing experience based on your personal preferences and goals. It helps establish boundaries, promote healthier viewing habits, and minimize distractions from irrelevant content. Gain control and enhance your digital wellbeing with YouTube Addiction Rehab.
+Youtube Distraction Helper is your digital ally against compulsive video watching on YouTube. Utilizing LLM AI technology, this extension curates your viewing experience based on your personal preferences and goals. It helps establish boundaries, promote healthier viewing habits, and minimize distractions from irrelevant content. Gain control and enhance your digital wellbeing with Youtube Distraction Helper.
 
 > [!NOTE] 
 > Packaged version is available on [Chrome Web Store](https://chromewebstore.google.com/detail/youtube-addiction-rehab/egjcbfpcghillmioipjehaikmekemilk).

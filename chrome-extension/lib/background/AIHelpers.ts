@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { savedSettingsStorage } from '@chrome-extension-boilerplate/storage';
 
 interface ChatCompletionResponse {
@@ -21,7 +22,7 @@ export async function fetchChatCompletion(systemPrompt: string, prompt: string):
         const { llmModel, aiProvider, openAIApiKey, anthropicApiKey, groqApiKey, localModelEndpoint, localModelName } = await savedSettingsStorage.get();
 
         if (aiProvider === 'openai') {
-            return fetchOpenAIChatCompletion(openAIApiKey, llmModel, formatPrompt(systemPrompt, prompt));
+            return fetchOpenAIChatCompletion(openAIApiKey, llmModel, systemPrompt, prompt);
         } else if (aiProvider === 'anthropic') {
             return fetchAnthropicChatCompletion(anthropicApiKey, llmModel, systemPrompt, prompt);
         } else if (aiProvider === 'groq') {
@@ -37,27 +38,44 @@ export async function fetchChatCompletion(systemPrompt: string, prompt: string):
     }
 }
 
-async function fetchOpenAIChatCompletion(apiKey: string, model: string, messages: any[]): Promise<string> {
-    const url = 'https://api.openai.com/v1/chat/completions';
-    const data = {
-        model: model,
-        response_format: { type: 'json_object' },
-        messages: messages,
-    };
-    const headers = {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-    };
+async function fetchOpenAIChatCompletion(apiKey: string, model: string,systemPrompt: string, prompt: string ): Promise<string> {
+    
+    const genAI = new GoogleGenerativeAI("AIzaSyAUJ3oDLCWUNzPD1rteY5M6bGqduRJcX1c");
 
-    return axios.post<ChatCompletionResponse>(url, data, { headers })
+    const llmModel = genAI.getGenerativeModel({
+  model:"gemini-1.5-flash",
+  systemInstruction:systemPrompt
+});
+
+    const generationConfig = {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 8192,
+        responseMimeType:  "application/json",
+      }
+    
+    
+    // const url = 'https://api.openai.com/v1/chat/completions';
+    // const data = {
+    //     model: model,
+    //     response_format: { type: 'json_object' },
+    //     messages: messages,
+    // };
+    // const headers = {
+    //     Authorization: `Bearer ${apiKey}`,
+    //     'Content-Type': 'application/json',
+    // };
+
+    return llmModel.generateContent(prompt)
         .then(response => {
-            if (response.data.choices && response.data.choices.length > 0) {
+            if (response.response.candidates!!.length>0 ) {
                 // Reset error status on successful request
                 savedSettingsStorage.set(prev => ({
                     ...prev,
                     apiErrorStatus: { type: null, timestamp: null }
                 }));
-                return response.data.choices[0].message.content;
+                return response.response.text();
             } else {
                 return 'No response from OpenAI.';
             }

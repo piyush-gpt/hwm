@@ -38,7 +38,6 @@ const GoalsEditor = ({ disabled }: { disabled: boolean }) => {
           value={helpfulVideos}
           onChange={e => setHelpfulVideos(e.target.value)}
           rows={5}
-          disabled={disabled}
         />
       </div>
       <div className="mb-4">
@@ -51,14 +50,13 @@ const GoalsEditor = ({ disabled }: { disabled: boolean }) => {
           value={harmfulVideos}
           onChange={e => setHarmfulVideos(e.target.value)}
           rows={5}
-          disabled={disabled}
         />
       </div>
       {hasChanges() && (
         <button
           className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           onClick={saveGoals}
-          disabled={disabled}>
+          >
           Save Changes
         </button>
       )}
@@ -72,23 +70,18 @@ const Popup = () => {
     chrome.runtime.openOptionsPage();
   };
 
-  const { openAIApiKey, anthropicApiKey, apiErrorStatus } = useStorageSuspense(savedSettingsStorage);
+  const {openAIApiKey, anthropicApiKey, apiErrorStatus } = useStorageSuspense(savedSettingsStorage);
 
   return (
     <div>
-      <GoalsEditor disabled={!openAIApiKey && !anthropicApiKey} />
+      <GoalsEditor disabled={true} />
       <div className="flex flex-row items-center bg-gray-900 border-t border-gray-500">
         <button
           onClick={openOptionsPage}
           className="block text-gray-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           Settings
         </button>
-        {!openAIApiKey && !anthropicApiKey && (
-          <div >⬅️</div>
-        )}
-        {!openAIApiKey && !anthropicApiKey && (
-          <span className="text-red-500 text-sm ml-2 my-2">Please set up your API key in the settings.</span>
-        )}
+       
       </div>
       {apiErrorStatus.type && (
         <div className="bg-red-500 text-white p-2 text-sm">

@@ -26,10 +26,10 @@ const manifest = Object.assign({
   },
   action: {
     default_popup: 'popup/index.html',
-    default_icon: 'icon-34.png',
+    default_icon: 'logo.png',
   },
   icons: {
-    128: 'icon-128.png',
+    128: 'logo.png',
   },
   content_scripts: [
     {
@@ -48,7 +48,7 @@ const manifest = Object.assign({
   ],
   web_accessible_resources: [
     {
-      resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-34.png'],
+      resources: ['*.js', '*.css', '*.svg', 'logo.png', 'logo.png'],
       matches: ['*://*/*'],
     },
   ],

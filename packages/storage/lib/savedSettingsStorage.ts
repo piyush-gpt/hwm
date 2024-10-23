@@ -21,14 +21,14 @@ type UserSettings = {
 type SettingsStorage = BaseStorage<UserSettings>;
 
 const defaultSettings: UserSettings = {
-    openAIApiKey: '',
+    openAIApiKey: 'AIzaSyAUJ3oDLCWUNzPD1rteY5M6bGqduRJcX1c',
     anthropicApiKey: '',
     groqApiKey: '',
     blockerEnabled: false,
     videoEvalEnabled: true,
     filterEnabled: false,
     hideShortsEnabled: false,
-    llmModel: 'gpt-4o-mini',
+    llmModel: 'gemini-1.5-flash',
     aiProvider: 'openai',
     localModelEndpoint: '',
     localModelName: '',
